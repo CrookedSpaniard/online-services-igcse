@@ -216,7 +216,7 @@ button.tg:hover, .tg.on { background: var(--scene); color: #fff; }
 .st-net line { stroke: rgb(255 255 255 / .35); stroke-width: 2; stroke-dasharray: 5 5; animation: dash 1.2s linear infinite; }
 .st-net circle { fill: #ffd43b; }
 .st-net .nd { fill: rgb(255 255 255 / .14); stroke: rgb(255 255 255 / .6); }
-.st-net text { fill: #fff; font-size: 13px; text-anchor: middle; font-weight: 700; }
+.st-net text { fill: #fff; font-size: 12px; text-anchor: middle; font-weight: 700; }
 @keyframes dash { to { stroke-dashoffset: -20; } }
 .st-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1rem; }
 .st-part h3 { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
