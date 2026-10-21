@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Online services and the cloud · IGCSE ICT</title>
+  <meta name="description" content="Interactive lesson on online services and the cloud: shopping sites, booking systems, banks, education providers, gaming, news, auction sites, the impact on lifestyle and on organisations, transactional data and cookies, hosted applications, online data storage and the impact of the cloud. Activities, a check after every section and two tests. Pearson Edexcel International GCSE ICT, Unit 4, pages 168–179.">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="lesson.css">
+  <link rel="stylesheet" href="scenes.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">
+        <span class="logo" role="img" aria-label="British School Alzira · Xàtiva · Gandia"></span>
+        <div class="titles">
+          <p class="kicker">IGCSE ICT · Unit 4 · Online goods and services</p>
+          <h1>Online services and the cloud</h1>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="chip-btn prog-btn" id="btnProgress" title="See, copy and move your progress">📊 My progress <b id="progPct">0%</b></button>
+        <button class="chip-btn" id="btnHelp" title="How to use this website" aria-label="How to use this website">? Help</button>
+        <button class="chip-btn" id="btnProjector" aria-pressed="false" title="Bigger text for the classroom projector (P)">Projector mode</button>
+        <button class="chip-btn" id="btnFull" title="Full screen (F)">Full screen</button>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Scenes"></nav>
+  </header>
+
+  <main>
+    <section class="lab" id="lab">
+      <div class="card stage-card">
+        <div class="stage-head">
+          <span class="scene-ic" id="sceneIc"></span>
+          <h2 id="sceneTitle"></h2>
+          <span class="try" id="tryBadge" hidden>Interactive · try it</span>
+        </div>
+        <div class="stage" id="stage"></div>
+      </div>
+
+      <aside class="side">
+        <div class="card narration" id="narration" aria-live="polite">
+          <p class="step-count" id="stepCount"></p>
+          <h3 id="stepTitle"></h3>
+          <div class="step-text" id="stepText"></div>
+          <p class="tip" id="stepTip" hidden></p>
+        </div>
+        <div class="card vocab" id="vocab" hidden>
+          <h4>Subject vocabulary</h4>
+          <dl id="vocabList"></dl>
+        </div>
+      </aside>
+    </section>
+
+    <section class="page" id="page" hidden></section>
+  </main>
+
+  <footer class="controls" id="controls">
+    <button class="btn ghost" id="btnReset" title="Restart this scene (R)">↺ <span>Restart</span></button>
+    <button class="btn ghost" id="btnBack" title="Back (←)">◀ <span>Back</span></button>
+    <button class="btn primary" id="btnPlay" title="Play / pause (Space)">▶ Play</button>
+    <button class="btn ghost" id="btnNext" title="Next (→)"><span>Next</span> ▶</button>
+    <label class="speed">Speed
+      <select id="speed">
+        <option value="0.5">0.5×</option>
+        <option value="1" selected>1×</option>
+        <option value="1.5">1.5×</option>
+        <option value="2">2×</option>
+      </select>
+    </label>
+    <div class="progress" aria-hidden="true"><div id="progressFill"></div></div>
+  </footer>
+
+  <script src="js/core.js"></script>
+  <script src="js/codes.js"></script>
+  <script src="js/check.js"></script>
+  <script src="js/activity.js"></script>
+  <script src="js/test.js"></script>
+  <script src="js/scenes/start.js"></script>
+  <script src="js/scenes/shopping.js"></script>
+  <script src="js/scenes/booking.js"></script>
+  <script src="js/scenes/banks.js"></script>
+  <script src="js/scenes/news.js"></script>
+  <script src="js/scenes/auction.js"></script>
+  <script src="js/scenes/lifestyle.js"></script>
+  <script src="js/scenes/business.js"></script>
+  <script src="js/scenes/cookies.js"></script>
+  <script src="js/scenes/testA.js"></script>
+  <script src="js/scenes/hosted.js"></script>
+  <script src="js/scenes/storage.js"></script>
+  <script src="js/scenes/impact.js"></script>
+  <script src="js/scenes/testB.js"></script>
+  <script src="js/scenes/terms.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
