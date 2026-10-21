@@ -76,7 +76,7 @@ canvas { display: block; max-width: 100%; height: auto; }
 .sh-n { font-size: .84rem; line-height: 1.2; }
 .sh-p { font-weight: 800; font-size: 1rem; color: var(--scene); }
 .sh-card .mini-btn { margin-top: .25rem; }
-.sh-side { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .6rem; display: grid; gap: .5rem; align-content: start; font-size: .86rem; }
+.sh-side { align-self: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .6rem; display: grid; gap: .5rem; align-content: start; font-size: .86rem; }
 .sh-bag { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
 .sh-bag li { display: grid; grid-template-columns: auto 1fr auto; gap: 0 .4rem; align-items: center; }
 .sh-bag li small { grid-column: 2; color: var(--muted); }
@@ -404,3 +404,20 @@ canvas { display: block; max-width: 100%; height: auto; }
 .im-tile span { font-size: 1.4rem; }
 button.im-tile:hover { border-color: var(--scene); }
 @media (max-width: 700px) { .im-vs, .im-costs { grid-template-columns: 1fr; } .im-spec { grid-template-columns: 1fr 1fr; } .im-town { grid-template-columns: repeat(6, 1fr); } }
+
+/* lifestyle: online vs local services */
+.lf-local { display: grid; gap: .6rem; }
+.lf-cmp th small { display: block; font-weight: 500; font-size: .74rem; opacity: .85; }
+.lf-cmp tbody th { white-space: nowrap; }
+.lf-cmp td { width: 40%; font-size: .84rem; }
+.lf-cmp tr:not([hidden]) { animation: toastIn .3s ease-out; }
+.lf-local .mw-h { margin: .4rem 0 0; }
+.lf-who { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .5rem; }
+.lf-wc p { color: var(--ink); margin-bottom: .4rem; }
+.lf-wc .btn.picked { border-color: var(--scene); font-weight: 750; }
+.lf-wc.ok { border-top-color: var(--good); }
+.lf-wc.no { border-top-color: var(--bad); }
+.lf-wf { display: block; margin-top: .35rem; color: var(--muted); }
+.lf-wc.ok .lf-wf b { color: var(--good); }
+.lf-wc.no .lf-wf b { color: var(--bad); }
+@media (max-width: 600px) { .lf-cmp tbody th { white-space: normal; } }

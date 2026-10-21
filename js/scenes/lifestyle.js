@@ -34,9 +34,29 @@ FD.add({
       ['Safer lifestyle as there is no need to carry cash, which might put individuals at risk', 'Individuals can be inconvenienced if no connectivity is available'],
       ['Individuals are more engaged with creative media like art, photography, videos and drama', 'Individuals may become less active because they can access services without having to move'],
     ];
+    // features of the same service: online vs a local (high street) shop
+    const CMP = [
+      ['🕐', 'Opening hours', 'Open 24 hours a day, 7 days a week.', 'Only open at set times; closed at night and on some holidays.'],
+      ['📍', 'Location', 'Used from anywhere with a device and an internet connection.', 'You must travel to the shop, which takes time and costs money.'],
+      ['📦', 'Choice and price', 'A very large range; easy to compare prices from many sellers.', 'Only what is in stock in that shop; harder to compare prices.'],
+      ['👟', 'Seeing the product', 'Photos, descriptions and reviews only: you cannot touch or try it on.', 'See, touch and try the product before you buy it.'],
+      ['🚚', 'Getting it', 'Delivered to your door, but you wait (hours or days) and may pay for delivery.', 'Take it home straight away.'],
+      ['🧑‍💼', 'Help and advice', 'Online chat, email and FAQs.', 'Face-to-face advice from staff.'],
+      ['💳', 'Paying', 'Card or third-party payment; risk of fraud if the site is not secure.', 'Cash or card, in person.'],
+      ['🏘️', 'Community', 'Money often goes to large national or global companies.', 'Supports local jobs and businesses; social contact with people.'],
+    ];
+    // made-up customers: who is better served by an online or a local service?
+    const WHO = [
+      ['👵', 'Rosa needs a coat for a wedding <b>tomorrow</b> and wants to <b>try it on</b>.', 'local', 'She can try it on and take it home straight away.'],
+      ['🎮', 'Sam wants the <b>cheapest</b> games console and does not mind waiting a few days.', 'online', 'Online he can compare prices from many sellers.'],
+      ['🌙', 'Dev works night shifts and can only shop at <b>2 am</b>.', 'online', 'Online services are available 24/7.'],
+      ['📵', 'Mr Brown has <b>no internet connection</b> at home.', 'local', 'Online services need a device and connectivity.'],
+      ['🏔️', 'Elena lives in a village <b>50 km</b> from the nearest town.', 'online', 'She avoids a long journey: the goods are delivered.'],
+      ['📱', 'Jo wants <b>expert advice</b> in person before choosing a new phone.', 'local', 'Staff in the shop give face-to-face advice.'],
+    ];
     el.innerHTML = `
       <div class="sim lf-s">
-        <div class="ptabs" role="group" aria-label="Simulations"><button data-p="time">⏱️ My week: offline or online?</button><button data-p="draw">⚠️ Drawbacks</button><button data-p="table">📋 Table 11.1</button></div>
+        <div class="ptabs" role="group" aria-label="Simulations"><button data-p="time">⏱️ My week: offline or online?</button><button data-p="draw">⚠️ Drawbacks</button><button data-p="table">📋 Table 11.1</button><button data-p="local">🏪 Online or local?</button></div>
         <div data-panel="time" class="lf-time">
           <ul class="lf-sv" id="sv"></ul>
           <div class="sim-box lf-sum" data-zone="free"><div class="lf-clock"><b id="saved">0 min</b><small>saved this week</small></div><p id="freeTxt" class="small"></p><ul class="lf-ben" id="ben"></ul></div>
@@ -51,6 +71,16 @@ FD.add({
             <thead><tr><th>Benefits</th><th>Drawbacks</th></tr></thead>
             <tbody>${T.map((r, i) => `<tr data-row="${i}"><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</tbody></table></div>
           <button class="btn" id="nextRow">Show the next row ▶</button>
+        </div>
+        <div data-panel="local" class="lf-local" hidden>
+          <p class="small">The same service can be offered <b>online</b> or <b>locally</b>, for example by a shop on the high street. Compare their features.</p>
+          <div class="tbl-wrap"><table class="tbl lf-cmp"><thead><tr><th>Feature</th><th>🌐 Online service<small>e.g. TrainerHub.com</small></th><th>🏪 Local service<small>e.g. a sports shop in town</small></th></tr></thead>
+            <tbody>${CMP.map(([e, f, o, l], i) => `<tr data-c="${i}"><th>${e} ${f}</th><td>${o}</td><td>${l}</td></tr>`).join('')}</tbody></table></div>
+          <button class="btn" id="nextCmp">Show the next feature ▶</button>
+          <h5 class="mw-h">Which service suits each customer better?</h5>
+          <div class="lf-who">${WHO.map(([e, q], i) => `<div class="mini lf-wc" data-w="${i}"><p>${e} ${q}</p>
+            <div class="chk-btns"><button class="btn" data-a="online">🌐 Online</button><button class="btn" data-a="local">🏪 Local</button></div><small class="lf-wf"></small></div>`).join('')}</div>
+          <p class="small" id="whoScore"></p>
         </div>
         <p class="verdict" id="msg"></p>
       </div>`;
@@ -84,15 +114,35 @@ FD.add({
     }
     function row(k) { rows = k ?? Math.min(T.length, rows + 1); root.querySelectorAll('[data-row]').forEach((r) => { r.hidden = +r.dataset.row >= rows; }); $('#nextRow').disabled = rows >= T.length; }
 
+    let cmp = 0;
+    function cmpRows(k) { cmp = k ?? Math.min(CMP.length, cmp + 1); root.querySelectorAll('[data-c]').forEach((r) => { r.hidden = +r.dataset.c >= cmp; }); $('#nextCmp').disabled = cmp >= CMP.length; }
+    const who = {};
+    function answer(i, a) {
+      if (who[i]) return;
+      const [, , right, why] = WHO[i], ok = a === right, card = root.querySelector(`[data-w="${i}"]`);
+      who[i] = ok ? 'ok' : 'no';
+      card.classList.add(ok ? 'ok' : 'no');
+      card.querySelectorAll('[data-a]').forEach((b) => { b.disabled = true; b.classList.toggle('picked', b.dataset.a === a); });
+      card.querySelector('.lf-wf').innerHTML = `${ok ? '✓' : '✗'} <b>${right === 'online' ? 'Online' : 'Local'}</b>: ${why}`;
+      const n = Object.keys(who).length, got = Object.values(who).filter((v) => v === 'ok').length;
+      $('#whoScore').innerHTML = n === WHO.length ? `<b>${got} / ${WHO.length}</b>. Neither is always better: choose by the customer’s needs.` : `${n} of ${WHO.length} answered.`;
+    }
+    function resetWho() {
+      Object.keys(who).forEach((k) => delete who[k]);
+      root.querySelectorAll('.lf-wc').forEach((c) => { c.classList.remove('ok', 'no'); c.querySelector('.lf-wf').textContent = ''; c.querySelectorAll('[data-a]').forEach((b) => { b.disabled = false; b.classList.remove('picked'); }); });
+      $('#whoScore').textContent = '';
+    }
+
     root.addEventListener('click', (e) => {
-      const t = e.target.closest('[data-s]'), d = e.target.closest('[data-d]');
+      const t = e.target.closest('[data-s]'), d = e.target.closest('[data-d]'), w = e.target.closest('[data-a]');
       if (t) toggle(t.dataset.s); else if (d) reveal(+d.dataset.d); else if (e.target.closest('#nextRow')) row();
+      else if (e.target.closest('#nextCmp')) cmpRows(); else if (w) answer(+w.closest('[data-w]').dataset.w, w.dataset.a);
     });
     $('#noNet').addEventListener('change', (e) => noNet(e.target.checked));
-    function reset() { online = {}; cur = ''; rows = 0; root.querySelectorAll('.lf-card').forEach((c) => c.classList.remove('open')); noNet(false); row(0); draw(); say(''); show('time'); FD.focus(root); }
+    function reset() { online = {}; cur = ''; rows = 0; root.querySelectorAll('.lf-card').forEach((c) => c.classList.remove('open')); noNet(false); row(0); cmpRows(0); resetWho(); draw(); say(''); show('time'); FD.focus(root); }
     reset();
     return {
-      reset, toggle, reveal, noNet, row, show,
+      reset, toggle, reveal, noNet, row, show, cmpRows, answer,
       focus: (z) => FD.focus(root, z),
       destroy() { dead = true; },
     };
@@ -130,6 +180,14 @@ FD.add({
       tip: 'Press “Show the next row”.',
       async on(a, ctx) { a.reset(); a.show('table'); for (let i = 1; i <= 3; i++) { if (!(await ctx.sleep(1300))) return; a.row(i); } },
     },
+    {
+      title: 'Online services and local services',
+      text: `<p>Many services are offered both <b>online</b> and <b>locally</b>, for example a shop or bank branch in town.</p>
+             <p><b>Online services</b> are available 24/7 from anywhere, offer a wider choice and make prices easy to compare, but you cannot see the product, you wait for delivery and you need a device and connectivity.</p>
+             <p><b>Local services</b> let you see and try products, take them home at once and get face-to-face advice, and they support the local community, but opening hours, stock and location are limited.</p>`,
+      tip: 'Try it: decide which service suits each customer.',
+      async on(a, ctx) { a.reset(); a.show('local'); for (let i = 1; i <= 8; i++) { if (!(await ctx.sleep(900))) return; a.cmpRows(i); } if (!(await ctx.sleep(900))) return; a.answer(0, 'local'); },
+    },
   ],
 });
 
@@ -140,5 +198,6 @@ FD.check({
     { type: 'mcq', q: 'How does online rail booking save customers time?', opts: ['They can buy tickets in advance and only arrive a few minutes before the train leaves', 'The train goes faster', 'They do not need a ticket', 'The station is closer'], why: 'They also avoid going to the station and queuing.' },
     { type: 'mcq', q: 'Why is the negative impact of online services on behaviour largely unknown?', opts: ['Online services have not been around long enough to understand their full impact', 'Nobody uses online services', 'It is a secret', 'Online services have no drawbacks'], why: 'People should still consider the potential negative impacts.' },
     { type: 'tf', q: 'Online information providers can reroute travellers automatically based on traffic conditions ahead.', a: true, why: 'They can also send weather alerts or traffic advice.' },
+    { type: 'sort', q: 'Is each a feature of an <b>online</b> service or a <b>local</b> service?', bins: ['Online service', 'Local service'], rows: [['Available 24 hours a day', 0], ['Try the product before you buy', 1], ['Easy to compare prices from many sellers', 0], ['Face-to-face advice from staff', 1], ['Wait for delivery', 0], ['Supports local jobs', 1]], why: 'Online: 24/7, wide choice, delivery. Local: see and try, take home at once, face-to-face help.' },
   ],
 });

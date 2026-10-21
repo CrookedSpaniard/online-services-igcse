@@ -11,7 +11,7 @@ Each section is explained step by step with interactive simulations, followed by
 3. Banks and education providers — balances, payments and transfers, balance alerts by text/email, loans, help, personal information; a VLE with library, online support and assessment → ✓ Check
 4. Gaming, news and information — a multiplayer game hosted on a remote server, news subscribers and notifications on a smartwatch (Figure 11.4), real-time weather, sport, stock markets and currency → ✓ Check
 5. Auction sites — live bidding, fixed price, ratings for buyers and sellers, non-payment and the second highest bidder, outbid and ending-soon alerts → ✓ Check
-6. Impact on lifestyle and behaviour — time saved by online grocery, rail, banking, learning and information services; potential drawbacks; no connectivity; Table 11.1 → ✓ Check
+6. Impact on lifestyle and behaviour — time saved by online grocery, rail, banking, learning and information services; potential drawbacks; no connectivity; Table 11.1; online services vs local services (feature comparison + “which suits each customer?”) → ✓ Check
 7. Impact on organisations — communication, global markets, global workforce, big data, security, competition (world map) → ✓ Check
 8. Transactional data and cookies — a browser with a cookie jar: what is stored, Set-Cookie and expiry (Figure 11.5), deleting, session, persistent and third-party cookies, an ad server and targeted banners, blocking third-party cookies, encryption → Activity (chapter question 11) → ✓ Check
 9. Test Part A (chapter questions 1–11)

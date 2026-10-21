@@ -142,7 +142,7 @@ window.FD = (() => {
     { id: 'banks', part: 'A', name: 'Banks and education', short: 'Banks / VLE', color: '--c7', line: 'Balances, balance alerts, payments; online courses and VLEs.' },
     { id: 'news', part: 'A', name: 'Gaming, news and information', short: 'Gaming / news', color: '--c3', line: 'Games hosted on remote servers, subscribers and real-time notifications.' },
     { id: 'auction', part: 'A', name: 'Auction sites', short: 'Auctions', color: '--c8', line: 'Bidding, ratings for buyers and sellers, outbid and ending-soon alerts.' },
-    { id: 'lifestyle', part: 'A', name: 'Impact on lifestyle and behaviour', short: 'Lifestyle', color: '--c6', line: 'Benefits and drawbacks of online goods and services (Table 11.1).' },
+    { id: 'lifestyle', part: 'A', name: 'Impact on lifestyle and behaviour', short: 'Lifestyle', color: '--c6', line: 'Benefits and drawbacks (Table 11.1); online services vs local services.' },
     { id: 'business', part: 'A', name: 'Impact on organisations', short: 'Business', color: '--c5', line: 'Global markets and workforce, big data, security, competition.' },
     { id: 'cookies', part: 'A', name: 'Transactional data and cookies', short: 'Cookies', color: '--c9', line: 'What is collected, session, persistent and third-party cookies, targeted marketing.' },
     { id: 'hosted', part: 'B', name: 'Hosted applications software', short: 'Hosted apps', color: '--c4', line: 'Web apps on servers, latency and bandwidth, collaboration (Table 12.1).' },
