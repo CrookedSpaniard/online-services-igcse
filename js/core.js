@@ -133,7 +133,7 @@ window.FD = (() => {
 
   // ---------- the two parts and their sections ----------
   FD.PARTS = {
-    A: { name: 'Online services', ch: 'Chapter 11', pages: 'pages 168–175' },
+    A: { name: 'Online services', ch: 'Chapter 11', pages: 'pages 168–175 + spec 4.1.1' },
     B: { name: 'The cloud', ch: 'Chapter 12', pages: 'pages 176–179' },
   };
   FD.SECTIONS = [
@@ -141,6 +141,7 @@ window.FD = (() => {
     { id: 'booking', part: 'A', name: 'Booking systems', short: 'Booking', color: '--c1', line: 'Travel, leisure and entertainment tickets, seat choice and e-tickets.' },
     { id: 'banks', part: 'A', name: 'Banks and education', short: 'Banks / VLE', color: '--c7', line: 'Balances, balance alerts, payments; online courses and VLEs.' },
     { id: 'news', part: 'A', name: 'Gaming, news and information', short: 'Gaming / news', color: '--c3', line: 'Games hosted on remote servers, subscribers and real-time notifications.' },
+    { id: 'media', part: 'A', name: 'Entertainment providers', short: 'Entertainment', color: '--c6', line: 'On demand, streaming and downloads; bandwidth, buffering and storage.' },
     { id: 'auction', part: 'A', name: 'Auction sites', short: 'Auctions', color: '--c8', line: 'Bidding, ratings for buyers and sellers, outbid and ending-soon alerts.' },
     { id: 'lifestyle', part: 'A', name: 'Impact on lifestyle and behaviour', short: 'Lifestyle', color: '--c6', line: 'Benefits and drawbacks (Table 11.1); online services vs local services.' },
     { id: 'business', part: 'A', name: 'Impact on organisations', short: 'Business', color: '--c5', line: 'Global markets and workforce, big data, security, competition.' },
@@ -212,6 +213,7 @@ window.FD = (() => {
     booking: ic('<path d="M3.5 7.5a1.5 1.5 0 0 1 1.5-1.5h14a1.5 1.5 0 0 1 1.5 1.5v2a2.5 2.5 0 0 0 0 5v2a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5v-2a2.5 2.5 0 0 0 0-5z"/><path d="M14.5 6v12" stroke-dasharray="2 2"/>'),
     banks: ic('<path d="M3.5 9.5L12 4l8.5 5.5z"/><path d="M5.5 10v7M9.5 10v7M14.5 10v7M18.5 10v7M3.5 20h17"/>'),
     news: ic('<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>'),
+    media: ic('<rect x="3" y="4.5" width="18" height="12" rx="2"/><path d="M10.5 8l4 2.5-4 2.5z"/><path d="M8 20h8"/>'),
     auction: ic('<path d="M13.5 4l6 6M11 6.5l6 6M12.2 5.3l-4.4 4.4 6 6 4.4-4.4"/><path d="M9.5 13.5L3.5 19.5"/><path d="M12 21h8.5"/>'),
     lifestyle: ic('<path d="M12 20s-7.5-4.5-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.5-7.5 10-7.5 10z"/>'),
     business: ic('<rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5V5.5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5.5v2M3.5 13h17"/>'),

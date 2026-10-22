@@ -26,7 +26,7 @@ FD.add({
         <div>
           <p class="kick">Unit 4 · Online goods and services · Pearson Edexcel International GCSE ICT</p>
           <h2>Online services and the cloud</h2>
-          <p>Before the internet, people used the telephone or the post to shop, study or book flights. Now we can use <b>online services</b> anywhere, with any connected device. In this lesson you will try out <b>shopping</b>, <b>booking</b>, <b>banking</b>, <b>learning</b>, <b>gaming</b>, <b>news</b> and <b>auction</b> services, see their <b>impact</b> on people and organisations, follow your data in <b>cookies</b>, and finish in <b>the cloud</b>: hosted applications and online data storage.</p>
+          <p>Before the internet, people used the telephone or the post to shop, study or book flights. Now we can use <b>online services</b> anywhere, with any connected device. In this lesson you will try out <b>shopping</b>, <b>booking</b>, <b>banking</b>, <b>learning</b>, <b>gaming</b>, <b>news</b>, <b>entertainment</b> and <b>auction</b> services, see their <b>impact</b> on people and organisations, follow your data in <b>cookies</b>, and finish in <b>the cloud</b>: hosted applications and online data storage.</p>
           <div class="who">
             <label>Your name<input id="sName" autocomplete="name" placeholder="First name and surname" value="${FD.esc(S.name)}"></label>
             <label>Class<input id="sClass" placeholder="e.g. 10B" value="${FD.esc(S.cls)}"></label>

@@ -194,6 +194,7 @@ FD.add({
     {
       title: 'Education and training providers',
       text: `<p>Online training courses allow learners to access:</p><ul><li>libraries of <b>online journals</b> and <b>reference archives</b></li><li><b>online support</b> from teachers and other learners</li><li>learning and <b>assessment</b> materials.</li></ul>
+             <p>Learners can use these services from home or anywhere else, at any time: this is <b>remote access</b> to the provider’s systems.</p>
              <p>This access is provided through <b>virtual learning environments (VLEs)</b>. See <i>Unit 3 Operating online</i> (page 139).</p>`,
       tip: 'Try it: search the library, post a question and do the quiz.',
       async on(a, ctx) {

@@ -428,3 +428,50 @@ button.im-tile:hover { border-color: var(--scene); }
 .lf-wc.ok .lf-wf b { color: var(--good); }
 .lf-wc.no .lf-wf b { color: var(--bad); }
 @media (max-width: 600px) { .lf-cmp tbody th { white-space: normal; } }
+
+/* ---------- entertainment providers ---------- */
+.md-dem { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) minmax(0, 15rem); gap: .7rem; align-items: start; }
+.md-sched { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.md-slot { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .5rem; align-items: center; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: .4rem .6rem; font-size: .86rem; }
+.md-slot.wait { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 8%, var(--surface)); }
+.md-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .45rem; }
+.md-item { display: grid; justify-items: center; gap: .1rem; text-align: center; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: .55rem .4rem; min-width: 0; }
+.md-item b { font-size: .86rem; }
+.md-item small { color: var(--muted); font-size: .74rem; }
+.md-item.on { border-color: var(--scene); box-shadow: 0 0 0 2px color-mix(in srgb, var(--scene) 35%, transparent); }
+.md-e { font-size: 1.7rem; line-height: 1.1; }
+.md-scr { min-height: 7.5rem; display: grid; place-content: center; justify-items: center; gap: .2rem; text-align: center; background: #14182b; color: #fff; border-radius: 10px; padding: .6rem; }
+.md-scr small { color: #c9d1e8; font-size: .78rem; }
+.md-scr em { font-style: normal; color: var(--yellow, #f6c94c); font-weight: 700; font-size: .8rem; }
+.md-scr .muted { color: #aab3cc; font-size: .84rem; }
+.md-scr.big { min-height: 9rem; }
+.md-scr.big .md-e { font-size: 3rem; transition: transform .4s; }
+.md-scr.on .md-e { animation: mdBob 1.6s ease-in-out infinite; }
+.md-scr.wait { position: relative; }
+.md-scr.wait::after { content: "⏳ Buffering…"; position: absolute; inset: auto 0 .5rem; font-weight: 700; font-size: .85rem; color: #ffd8a8; }
+@keyframes mdBob { 50% { transform: translateY(-4px) scale(1.04); } }
+.md-ctl { display: flex; gap: .35rem; margin-top: .45rem; flex-wrap: wrap; }
+.md-str { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .7rem; align-items: start; }
+.md-opts .seg { margin-bottom: .5rem; }
+.md-go { display: flex; gap: .4rem; flex-wrap: wrap; margin: .3rem 0 .6rem; }
+.md-disk { display: grid; gap: .25rem; font-size: .84rem; }
+.md-disk small { color: var(--muted); }
+.md-track { position: relative; height: .7rem; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; margin-top: .55rem; }
+.md-track i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: inherit; }
+.md-buf { background: color-mix(in srgb, var(--scene) 30%, var(--surface)); }
+.md-pos { background: var(--scene); }
+.md-key { display: flex; align-items: center; gap: .35rem; flex-wrap: wrap; margin: .35rem 0 0; color: var(--muted); }
+.md-key span { display: inline-block; width: .9rem; height: .55rem; border-radius: 3px; }
+.md-key .k1 { background: color-mix(in srgb, var(--scene) 30%, var(--surface)); border: 1px solid var(--line); }
+.md-key .k2 { background: var(--scene); margin-left: .5rem; }
+.md-cmp { grid-column: 1 / -1; width: 100%; border-collapse: collapse; font-size: .84rem; }
+.md-cmp th, .md-cmp td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+.md-cmp thead th { color: var(--muted); font-size: .76rem; text-transform: uppercase; letter-spacing: .04em; }
+.md-cmp tbody th { white-space: nowrap; }
+.md-cmp.focus { outline: 3px solid color-mix(in srgb, var(--scene) 45%, transparent); outline-offset: 4px; border-radius: 8px; }
+@container stage (max-width: 52rem) {
+  .md-dem { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .md-dem .md-cat { grid-column: 1 / -1; grid-row: 1; }
+  .md-str { grid-template-columns: minmax(0, 1fr); }
+  .md-cmp tbody th { white-space: normal; }
+}
