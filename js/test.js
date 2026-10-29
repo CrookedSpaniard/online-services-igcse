@@ -161,19 +161,32 @@ FD.test = (cfg) => {
 };
 
 // The results of one test as plain text (also used by My progress).
-FD.testText = (id) => {
-  const cfg = FD.TESTS[id], t = FD.state.tests[id], part = FD.PARTS[cfg.part];
+FD.testLines = (id) => {
+  const cfg = FD.TESTS[id], t = FD.state.tests[id];
+  if (!t || !t.done) return ['Not finished yet.'];
   const lines = [
-    `Online services and the cloud – Test Part ${cfg.part}: ${part.name} (IGCSE ICT, Unit 4)`,
-    `Name: ${FD.state.name.trim() || '–'} | Class: ${FD.state.cls.trim() || '–'} | Date: ${t && t.date ? t.date : FD.today()}`,
+    `Score:     ${t.score} / ${t.total} (${t.pct}%)`,
+    `Time:      ${t.mins} min`,
+    `Date:      ${t.date}`,
+    '',
+    t.wrong && t.wrong.length ? 'Questions to review:' : 'Questions to review: none, all correct!',
+    ...(t.wrong || []).map((i) => `   ✗ Q${i + 1}. ${cfg.Q[i][1].replace(/<[^>]+>/g, '')}`),
   ];
-  if (!t || !t.done) return lines.concat(['Not finished yet.']).join('\n');
-  return lines.concat([
-    `Score (multiple choice): ${t.score}/${t.total} (${t.pct}%) | Time: ${t.mins} min`,
-    `Mistakes: ${t.wrong && t.wrong.length ? t.wrong.map((i) => `Q${i + 1} (${cfg.Q[i][0]})`).join(', ') : 'none'}`,
-    'Written answers:',
-    ...cfg.LONG.map((l, i) => `Q${i + 1} [${l.m}]: ${(t.long[i] || '').trim().replace(/\s+/g, ' ') || '(no answer)'}`),
-  ]).join('\n');
+  cfg.LONG.forEach((l, i) => lines.push('', `Written answer ${i + 1} (${l.m} mark${l.m > 1 ? 's' : ''}): ${l.q.replace(/<[^>]+>/g, '')}`, `   ${(t.long[i] || '').trim().replace(/\s+/g, ' ') || '(no answer)'}`));
+  return lines;
+};
+FD.testText = (id) => {
+  const cfg = FD.TESTS[id], t = FD.state.tests[id];
+  const rule = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+  return [
+    `ONLINE SERVICES AND THE CLOUD · TEST PART ${cfg.part}`,
+    `IGCSE ICT · Unit 4 · ${FD.PARTS[cfg.part].name}`,
+    rule,
+    `Name:      ${FD.state.name.trim() || '–'}`,
+    `Class:     ${FD.state.cls.trim() || '–'}`,
+    ...(t && t.done ? [] : [`Date:      ${FD.today()}`]),
+    ...FD.testLines(id),
+  ].join('\n');
 };
 
 // Deterministic shuffle (mulberry32).

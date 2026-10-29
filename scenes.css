@@ -475,3 +475,14 @@ button.im-tile:hover { border-color: var(--scene); }
   .md-str { grid-template-columns: minmax(0, 1fr); }
   .md-cmp tbody th { white-space: normal; }
 }
+
+/* reset progress (two confirmations) */
+.pr-danger { border-color: color-mix(in srgb, var(--bad) 35%, var(--line)); }
+.pr-danger.on { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 5%, var(--surface)); }
+.pr-danger h3 { color: var(--bad); }
+.danger-btn { background: var(--bad); border-color: var(--bad); color: #fff; }
+.danger-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--bad) 85%, #000); }
+.rs-step { display: grid; gap: .55rem; animation: enter .3s; }
+.rs-step p { margin: 0; }
+.rs-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.rs-row input { border: 2px solid var(--bad); border-radius: 8px; background: var(--surface); color: var(--ink); padding: .45rem .7rem; font: 700 1rem ui-monospace, Menlo, monospace; letter-spacing: .12em; width: 9rem; text-transform: uppercase; }

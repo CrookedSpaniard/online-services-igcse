@@ -40,30 +40,65 @@
   };
 
   // ---------- the report students copy ----------
+  // Plain text that stays readable when pasted into an email or Google Classroom:
+  // short labelled lines, one item per line, blank lines between blocks.
+  const RULE = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+  const head = (t) => ['', RULE, t.toUpperCase(), RULE];
+  const clean = (s) => String(s || '').trim().replace(/\s+/g, ' ');
+  const testRow = (id) => { const t = FD.state.tests[id]; return t && t.done ? `${t.score}/${t.total} (${t.pct}%) on ${t.date}` : t && Object.keys(t.picks || {}).length ? 'started, not finished' : 'not done'; };
+  const actLines = (a) => {
+    const v = FD.state.acts[a.id] || {};
+    if (a.type === 'table') {
+      if (!FD.state.acts[a.id]) return ['   (not done)'];
+      const p = v.picks || {};
+      return [v.total != null ? `   Score: ${v.score}/${v.total}` : '   (not checked yet)',
+        ...a.rows.map(([given, ans], r) => `   ${clean(given)}: ${ans.map((x, c) => (x == null ? '' : a.opts[c][p[r + '-' + c]] || '?')).filter(Boolean).join(' / ')}`)];
+    }
+    if (!FD.actDone(a.id) && !clean(v.text) && !(v.f || []).some(clean)) return ['   (not done)'];
+    const L = (a.fields || []).map((f, k) => `   ${f}: ${clean((v.f || [])[k]) || '–'}`);
+    if (clean(v.text)) L.push(`   ${a.fields && a.fields.length ? 'Notes: ' : ''}${clean(v.text)}`);
+    return L;
+  };
   FD.report = () => {
     const S = FD.state;
+    const done = FD.SECTIONS.map((s) => S.checks['check-' + s.id]).filter(Boolean);
+    const got = done.reduce((n, c) => n + c.score, 0), max = done.reduce((n, c) => n + c.total, 0);
     const L = [
-      'Online services and the cloud – My progress (IGCSE ICT, Unit 4)',
-      `Name: ${S.name.trim() || '–'} | Class: ${S.cls.trim() || '–'} | Date: ${FD.today()}`,
-      `Completed: ${FD.percent()}% | Started: ${S.started}`,
+      'ONLINE SERVICES AND THE CLOUD · MY PROGRESS',
+      'IGCSE ICT · Unit 4',
+      RULE,
+      `Name:      ${clean(S.name) || '–'}`,
+      `Class:     ${clean(S.cls) || '–'}`,
+      `Date:      ${FD.today()}`,
+      `Completed: ${FD.percent()}% of the unit`,
+      ...head('Summary'),
+      `Sections seen:  ${FD.SECTIONS.filter((s) => S.seen[s.id]).length} of ${FD.SECTIONS.length}`,
+      `Checks done:    ${done.length} of ${FD.SECTIONS.length}${max ? ` (${got}/${max} marks, ${Math.round((100 * got) / max)}%)` : ''}`,
+      `Activities:     ${FD.ACTS.filter((a) => FD.actDone(a.id)).length} of ${FD.ACTS.length}`,
+      ...Object.keys(FD.TESTS).map((id) => `${('Test Part ' + FD.TESTS[id].part + ':').padEnd(16)}${testRow(id)}`),
     ];
     ['A', 'B'].forEach((p) => {
-      L.push('', `PART ${p} · ${FD.PARTS[p].name.toUpperCase()}`);
-      FD.SECTIONS.filter((s) => s.part === p).forEach((s, i) => {
+      L.push(...head(`Part ${p} · ${FD.PARTS[p].name}`));
+      FD.SECTIONS.filter((s) => s.part === p).forEach((s) => {
         const c = S.checks['check-' + s.id];
+        const bits = [S.seen[s.id] ? 'seen' : 'not seen yet', c ? `check ${c.score}/${c.total}${c.tries > 1 ? ` (best ${c.best}, ${c.tries} tries)` : ''}` : 'check not done'];
         const acts = FD.ACTS.filter((a) => a.section === s.id);
-        L.push(`${FD.SECTIONS.indexOf(s) + 1}. ${s.name} — ${S.seen[s.id] ? 'seen ✓' : 'not seen'} · Check: ${c ? `${c.score}/${c.total}${c.tries > 1 ? ` (best ${c.best}, ${c.tries} tries)` : ''}` : 'not done'}${acts.length ? ` · Activities: ${acts.filter((a) => FD.actDone(a.id)).length}/${acts.length}` : ''}`);
+        if (acts.length) bits.push(`activities ${acts.filter((a) => FD.actDone(a.id)).length}/${acts.length}`);
+        L.push(`${S.seen[s.id] && c ? '✓' : '○'} ${FD.SECTIONS.indexOf(s) + 1}. ${s.name}`, `     ${bits.join(' · ')}`);
       });
-      const tid = 'test' + p, t = S.tests[tid];
-      L.push(`Test Part ${p}: ${t && t.done ? `${t.score}/${t.total} (${t.pct}%) on ${t.date}` : t && Object.keys(t.picks || {}).length ? 'started, not finished' : 'not done'}`);
+      const t = S.tests['test' + p];
+      L.push(`${t && t.done ? '✓' : '○'} Test Part ${p}`, `     ${testRow('test' + p)}`);
     });
-    L.push('', 'ACTIVITY ANSWERS');
-    FD.ACTS.forEach((a) => L.push(`• ${a.title}: ${FD.actText(a)}`));
+    if (FD.ACTS.length) {
+      L.push(...head('Activity answers'));
+      FD.ACTS.forEach((a, i) => L.push(`${i + 1}. ${a.title}`, ...actLines(a), ''));
+    }
     Object.keys(FD.TESTS).forEach((id) => {
-      const t = S.tests[id];
-      if (t && t.done) L.push('', FD.testText(id));
+      const t = S.tests[id], cfg = FD.TESTS[id];
+      if (t && t.done) L.push(...head(`Test Part ${cfg.part} · ${FD.PARTS[cfg.part].name}`), ...FD.testLines(id));
     });
-    return L.join('\n');
+    L.push('', RULE, 'Key: ✓ done   ○ still to do');
+    return L.join('\n').replace(/\n{3,}/g, '\n\n');
   };
 
   // ---------- progress code ----------
@@ -163,7 +198,30 @@
         </div>
         <p class="small" id="cMsg">${msg || ''}</p>
       </section>
-      <p class="small"><button class="link-btn danger" id="pReset">Clear all my progress on this device</button></p>`;
+      <section class="pr-box pr-danger" id="resetBox">
+        <h3>↺ Start again from zero</h3>
+        <div id="rs0">
+          <p class="small muted">Deletes everything saved on this device: sections seen, checks, activity answers and test answers. Use it if you want to repeat the unit, or if this is a shared computer.</p>
+          <div class="chk-btns"><button class="btn danger-btn" id="rsGo">↺ Reset my progress</button></div>
+        </div>
+        <div id="rs1" class="rs-step" hidden>
+          <p><b>1 of 2 · Are you sure?</b> You will lose your <b>${pct}%</b> progress${FD.ACTS.some((a) => FD.actDone(a.id)) ? ' and your written answers' : ''}. Copy your progress first if your teacher needs it.</p>
+          <div class="chk-btns">
+            <button class="btn" id="rsCopy">${FD.icon.copy} Copy my progress first</button>
+            <button class="btn danger-btn" id="rsYes">Yes, continue</button>
+            <button class="btn ghost" id="rsNo1">Cancel</button>
+          </div>
+        </div>
+        <div id="rs2" class="rs-step" hidden>
+          <p><b>2 of 2 · Last check.</b> This cannot be undone. Type <b>RESET</b> to confirm.</p>
+          <div class="rs-row">
+            <input id="rsIn" autocomplete="off" spellcheck="false" placeholder="RESET" aria-label="Type RESET to confirm">
+            <button class="btn danger-btn" id="rsDo" disabled>Delete all my progress</button>
+            <button class="btn ghost" id="rsNo2">Cancel</button>
+          </div>
+        </div>
+        <p class="small" id="rsMsg"></p>
+      </section>`;
 
     const B = $('#progBody');
     $('#pName', B).addEventListener('input', (e) => { FD.state.name = e.target.value; FD.save(); });
@@ -197,15 +255,40 @@
     };
     $('#cLoad', B).addEventListener('click', () => load($('#cIn', B).value));
     $('#cOpen', B).addEventListener('change', async (e) => { const f = e.target.files[0]; if (f) load(await f.text()); });
-    $('#pReset', B).addEventListener('click', () => {
-      if (!confirm('Clear ALL your progress on this device? Copy your progress code first if you want to keep it.')) return;
+    // Reset: two confirmations (are you sure? → type RESET).
+    const step = (n) => {
+      ['#rs0', '#rs1', '#rs2'].forEach((s, k) => { $(s, B).hidden = k !== n; });
+      $('#rsMsg', B).textContent = '';
+      if (n === 2) { $('#rsIn', B).value = ''; $('#rsDo', B).disabled = true; $('#rsIn', B).focus(); }
+      $('#resetBox', B).classList.toggle('on', n > 0);
+    };
+    $('#rsGo', B).addEventListener('click', () => step(1));
+    $('#rsYes', B).addEventListener('click', () => step(2));
+    $('#rsNo1', B).addEventListener('click', () => step(0));
+    $('#rsNo2', B).addEventListener('click', () => step(0));
+    $('#rsCopy', B).addEventListener('click', async () => {
+      const ok = await FD.copy(FD.report());
+      $('#rsMsg', B).innerHTML = ok ? '<b class="good">✓ Progress copied.</b> Paste it somewhere safe, then continue.' : '<b class="bad">Could not copy automatically.</b> Use “Download .txt” above first.';
+    });
+    $('#rsIn', B).addEventListener('input', (e) => { $('#rsDo', B).disabled = e.target.value.trim().toUpperCase() !== 'RESET'; });
+    $('#rsIn', B).addEventListener('keydown', (e) => { if (e.key === 'Enter' && !$('#rsDo', B).disabled) $('#rsDo', B).click(); });
+    $('#rsDo', B).addEventListener('click', () => {
+      if ($('#rsIn', B).value.trim().toUpperCase() !== 'RESET') return;
       FD.resetState();
+      try { sessionStorage.removeItem('og-greeted'); } catch (e) { /* ignore */ }
       if (FD.refresh) FD.refresh();
-      render('<b>Progress cleared.</b>');
+      FD.goto('start');
+      render();
+      $('#rsMsg', $('#progBody')).innerHTML = '<b class="good">✓ All progress on this device has been deleted.</b> You can start the unit again.';
+      $('#resetBox', $('#progBody')).scrollIntoView({ block: 'nearest' });
     });
   }
 
-  FD.openProgress = () => { render(); dlg.showModal(); };
+  FD.openProgress = (where) => {
+    render();
+    dlg.showModal();
+    if (where === 'reset') { $('#resetBox').scrollIntoView({ block: 'center' }); $('#rsGo').focus(); }
+  };
   FD.openHelp = () => help.showModal();
 
   // header badge
@@ -227,12 +310,13 @@
         <button class="btn ghost" id="wProg">${FD.icon.progress} See my progress</button>
         <button class="btn ghost" id="wStart">Go to the start</button>
       </div>
-      <p class="small muted">Not you? Open <b>My progress</b> and clear the progress on this device.</p>`;
+      <p class="small muted">Not you, or want to start again? <button class="link-btn danger" id="wReset">Reset the progress on this device</button></p>`;
     welcome.showModal();
     const go = (f) => () => { welcome.close(); f(); };
     if (sc) $('#wGo').addEventListener('click', go(() => FD.goto(S.last, S.step || 0)));
     $('#wProg').addEventListener('click', go(FD.openProgress));
     $('#wStart').addEventListener('click', go(() => FD.goto(FD.scenes[0].id)));
+    $('#wReset').addEventListener('click', go(() => FD.openProgress('reset')));
     return true;
   };
 
